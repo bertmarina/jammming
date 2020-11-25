@@ -1,4 +1,4 @@
-const clientId = '5a3e20bafb094d80b080ddd1de4666ea';
+const clientId = ''; //Not displayed for security reasons
 const redirectUri = 'http://marinas-jammming.surge.sh/';
 let accessToken;
 

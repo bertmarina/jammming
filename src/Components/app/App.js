@@ -25,6 +25,11 @@ export class App extends React.Component {
     this.search = this.search.bind(this);
   }
 
+  //This method allows not to have the page refreshed after first search
+  componentDidMount() {
+    window.addEventListener('load', () => { Spotify.getAccessToken() });
+}
+
   //Method to add tracks from the SearchResults to the Playlist
   addTrack(track) { //Track is an object
     let tracks = this.state.playlistTracks;
@@ -54,13 +59,14 @@ export class App extends React.Component {
       this.setState({
         playlistName: 'New Playlist',
         playlistTracks: []
-      })
-    })
+      });
+    });
   }
 
   //method that sends term request to Spotify and returns results of search
   search(term) {
-    Spotify.search(term).then(searchResults => {
+    Spotify.search(term).then(
+      searchResults => {
       this.setState({searchResults: searchResults})
     })
   }
@@ -72,8 +78,10 @@ export class App extends React.Component {
   <div className="App">
     <SearchBar onSearch={this.search}/>
     <div className="App-playlist">
-      <SearchResults searchResults={this.state.searchResults} 
-      onAdd= {this.addTrack} />
+      <SearchResults searchResults={this.state.searchResults}
+      playlistTracks={this.state.playlistTracks} 
+      onAdd= {this.addTrack}
+      />
       <Playlist playlistTracks={this.state.playlistTracks} 
       playlistName={this.state.playlistName}
       onRemove={this.removeTrack}
